@@ -8,7 +8,7 @@
 
 *Positioning shorthand for the product direction; not a claim of feature parity with any existing platform.*
 
-The product is designed to provide near-real-time operational visibility into AI agents, workflow executions, token usage and estimated costs, API health, error rates, uptime, rate limits, and system performance.
+The product is designed to provide near-real-time operational visibility into AI agents, workflow executions, API usage and health, token usage and estimated costs, error rates, uptime, rate limits, and system performance. The concept combines infrastructure observability, AI execution tracing, and workflow operations in one small-business-focused mental model.
 
 <p>
   <img src="https://img.shields.io/badge/AI%20INFRASTRUCTURE-OBSERVABILITY-ff6b35?style=for-the-badge" alt="AI infrastructure observability" />
@@ -37,7 +37,7 @@ The product is aimed at small businesses and lean teams that need practical visi
 
 | Pillar | Operational visibility |
 | --- | --- |
-| **Fleet Health** | Agent status, workflow success, API availability and latency, and service uptime. |
+| **Fleet Health** | Agent status, workflow success, API request volume, availability and latency, rate limits, and service uptime. |
 | **Cost Intelligence** | Token consumption, model spend, and workflow execution costs; clearly distinguish estimates from authoritative provider billing. |
 | **Incident Center** | Failed workflows, API outages, agent exceptions, rate-limit events, and the context needed for triage. |
 | **Governance** | Audit logs, approval queues, human-in-the-loop controls, and privacy-aware access to operational activity. |
@@ -51,7 +51,7 @@ The center’s core promise is to help an operator answer: **What is failing? Wh
 The system is modeled as an observability pipeline: operational sources emit or expose signals; connectors collect and normalize them; analytics maps those signals to the six product pillars; and the dashboard turns them into operator decisions. For a small-business MVP, start with webhooks and lightweight connectors. Add Kafka or NATS only if throughput, replay, or multi-consumer requirements justify their added operating cost.
 
 <p align="center">
-  <img src="diagrams/ai-operations-center-architecture.png" alt="AI Operations Center architecture: agents and n8n/API workflows send signals to a metrics collector, storage, analytics and alerting, and the operations dashboard" width="100%" />
+  <img src="diagrams/ai-operations-center-architecture.png" alt="AI Operations Center architecture: AI agents, n8n workflows and APIs send signals through webhook connectors and an optional event bus to six observability pillars, dashboards and alerts" width="100%" />
 </p>
 
 ```text
@@ -60,7 +60,7 @@ n8n workflows ───┼──> Webhook / connector intake ──> Optional ev
 APIs/services ──┘                      (Kafka/NATS only if needed)                                        └──> Alerts
 ```
 
-The architecture is conceptual. It intentionally avoids vendor-specific endpoints, event schemas, customer data, and production topology. See [`diagrams/architecture.dot`](diagrams/architecture.mmd) and [`docs/architecture.md`](docs/architecture.md) for the source and design notes.
+The architecture is conceptual. It intentionally avoids vendor-specific endpoints, event schemas, customer data, and production topology. See [`diagrams/architecture.dot`](diagrams/architecture.dot) and [`docs/architecture.md`](docs/architecture.md) for the source and design notes.
 
 ## Proposed technology stack
 
@@ -95,7 +95,6 @@ This is a **proposed stack for an implementation**, not a statement that the sof
 - **Cost transparency:** separate measured provider charges from estimates based on usage and pricing assumptions.
 - **Privacy by design:** collect only the operational metadata needed; avoid retaining prompts, secrets, or unnecessary customer content.
 - **Small-business operability:** favor clear defaults, simple onboarding, and understandable actions over complex enterprise configuration.
-
 
 ## Architecture choices to validate
 
