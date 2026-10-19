@@ -51,7 +51,7 @@ The center’s core promise is to help an operator answer: **What is failing? Wh
 The system is modeled as an observability pipeline: operational sources emit or expose signals; connectors collect and normalize them; analytics maps those signals to the six product pillars; and the dashboard turns them into operator decisions. For a small-business MVP, start with webhooks and lightweight connectors. Add Kafka or NATS only if throughput, replay, or multi-consumer requirements justify their added operating cost.
 
 <p align="center">
-  <img src="diagrams/ai-operations-center-architecture.png" alt="AI Operations Center architecture: AI agents, n8n workflows and APIs send signals through webhook connectors and an optional event bus to six observability pillars, dashboards and alerts" width="100%" />
+  <img src="diagrams/ai-operations-center-architecture.png" alt="AI Operations Center architecture: AI agents, n8n workflows, APIs, and user activity send signals through webhook connectors and an optional event bus to six observability pillars, dashboards and alerts" width="100%" />
 </p>
 
 ```text

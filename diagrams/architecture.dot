@@ -6,7 +6,8 @@ digraph ai_ops_center {
     agents [label="AI agents", color="#18b8d4"];
     n8n [label="n8n workflows", color="#18b8d4"];
     apis [label="APIs & services", color="#18b8d4"];
-    {rank=same; agents; n8n; apis;}
+    activity [label="User activity", color="#18b8d4"];
+    {rank=same; agents; n8n; apis; activity;}
   }
   intake [label="Webhook /\nconnector intake"];
   bus [label="Optional event bus\nKafka / NATS", style="rounded,dashed,filled", color="#718096", fillcolor="#101820", fontcolor="#cbd5e1"];
@@ -23,6 +24,7 @@ digraph ai_ops_center {
   agents -> intake;
   n8n -> intake;
   apis -> intake;
+  activity -> intake;
   intake -> bus;
   intake -> collect;
   bus -> collect;
