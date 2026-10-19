@@ -1,0 +1,29 @@
+digraph ai_ops_center {
+  graph [rankdir=LR, bgcolor="#0b1117", pad="0.35", nodesep="0.34", ranksep="0.70", splines=ortho, fontname="Arial", fontsize=20, fontcolor="#f4f6f8", label="AI OPERATIONS CENTER  ·  OBSERVABILITY PIPELINE", labelloc=t, labeljust=l];
+  node [shape=box, style="rounded,filled", fillcolor="#121d29", color="#ff6b35", penwidth=1.6, fontname="Arial", fontsize=12, fontcolor="#f4f6f8", margin="0.20,0.14", width=1.8, height=0.62];
+  edge [color="#ff8a3d", penwidth=1.6, arrowsize=0.75];
+  subgraph cluster_sources { label="SIGNAL SOURCES"; style="rounded,filled"; color="#334155"; fillcolor="#101820"; fontname="Arial"; fontsize=11; fontcolor="#18b8d4";
+    agents [label="AI agents", color="#18b8d4"];
+    workflows [label="n8n workflows", color="#18b8d4"];
+    services [label="APIs & services", color="#18b8d4"];
+    activity [label="User activity", color="#18b8d4"];
+    {rank=same; agents; workflows; services; activity;}
+  }
+  subgraph cluster_pipeline { label="OBSERVABILITY PIPELINE"; style="rounded,filled"; color="#334155"; fillcolor="#101820"; fontname="Arial"; fontsize=11; fontcolor="#18b8d4";
+    collector [label="Metrics collector\n& connectors"];
+    storage [label="Telemetry storage", color="#18b8d4"];
+    analytics [label="Analytics &\nalert evaluation"];
+  }
+  subgraph cluster_outcomes { label="OPERATOR EXPERIENCE"; style="rounded,filled"; color="#334155"; fillcolor="#101820"; fontname="Arial"; fontsize=11; fontcolor="#18b8d4";
+    dashboard [label="Operations dashboard", color="#18b8d4"];
+    notify [label="Notifications", color="#18b8d4"];
+    {rank=same; dashboard; notify;}
+  }
+  agents -> collector;
+  workflows -> collector;
+  services -> collector;
+  activity -> collector;
+  collector -> storage -> analytics;
+  analytics -> dashboard;
+  analytics -> notify;
+}
