@@ -4,7 +4,9 @@
 
 # AI Operations Center
 
-**A centralized platform for monitoring and managing AI systems, workflows, APIs, and automation infrastructure.**
+**Datadog for AI Agents and n8n Automations** — a small-business operations layer for monitoring and managing AI systems, workflows, APIs, and automation infrastructure.
+
+*Positioning shorthand for the product direction; not a claim of feature parity with any existing platform.*
 
 The product is designed to provide near-real-time operational visibility into AI agents, workflow executions, token usage and estimated costs, API health, error rates, uptime, rate limits, and system performance.
 
@@ -31,23 +33,22 @@ The opportunity is a shared control plane that makes the health and activity of 
 
 The product is aimed at small businesses and lean teams that need practical visibility: enough context to notice incidents, diagnose common failures, understand consumption, and decide what needs attention—without turning operations into a full-time specialist discipline.
 
-## Key capabilities
+## Six product pillars
 
-| Capability | What an operator should be able to answer |
+| Pillar | Operational visibility |
 | --- | --- |
-| **Agent monitoring** | Which agents are active, what their recent run status is, and where failures or delays are occurring. |
-| **Workflow analytics** | How n8n workflows are executing, how often they succeed or fail, and which workflows need review. |
-| **API health tracking** | Whether connected services are responding, how errors and latency are trending, and when rate limits are being reached. |
-| **Token and cost reporting** | How AI consumption is changing over time, with costs clearly identified as estimates unless authoritative billing data is available. |
-| **Error detection** | Which failures are recurring, which components are affected, and what operational action is appropriate. |
-| **Uptime and health** | Whether monitored services and critical workflow paths are available and meeting their configured health expectations. |
-| **Usage analytics** | How the platform is being used, presented with privacy-conscious aggregation and access controls. |
-| **Operations dashboards** | A prioritized overview of health, activity, usage, and items that need attention. |
-| **Alerting framework** | A foundation for configurable notifications when important thresholds or state changes occur. |
+| **Fleet Health** | Agent status, workflow success, API availability and latency, and service uptime. |
+| **Cost Intelligence** | Token consumption, model spend, and workflow execution costs; clearly distinguish estimates from authoritative provider billing. |
+| **Incident Center** | Failed workflows, API outages, agent exceptions, rate-limit events, and the context needed for triage. |
+| **Governance** | Audit logs, approval queues, human-in-the-loop controls, and privacy-aware access to operational activity. |
+| **Business Metrics** | Leads processed, calls booked, and optional revenue attribution—only from authorized sources and agreed definitions; no formulas or commercial rules are disclosed here. |
+| **Agent Registry** | A catalog of agents, workflows, and API dependencies with ownership, status, and documentation. |
+
+The center’s core promise is to help an operator answer: **What is failing? What is costing more than expected? What requires intervention?** The six pillars are product goals, not features already delivered by this concept repository.
 
 ## Architecture
 
-The system is modeled as an observability pipeline: operational sources emit or expose signals; connectors collect and normalize them; analytics identifies useful patterns; and the dashboard turns them into operator decisions.
+The system is modeled as an observability pipeline: operational sources emit or expose signals; connectors collect and normalize them; analytics maps those signals to the six product pillars; and the dashboard turns them into operator decisions. For a small-business MVP, start with webhooks and lightweight connectors. Add Kafka or NATS only if throughput, replay, or multi-consumer requirements justify their added operating cost.
 
 <p align="center">
   <img src="diagrams/ai-operations-center-architecture.png" alt="AI Operations Center architecture: agents and n8n/API workflows send signals to a metrics collector, storage, analytics and alerting, and the operations dashboard" width="100%" />
@@ -55,8 +56,8 @@ The system is modeled as an observability pipeline: operational sources emit or 
 
 ```text
 AI agents ───────┐
-n8n workflows ───┼──> Metrics collector ──> Telemetry storage ──> Analytics & alerts ──> Operations dashboard
-APIs/services ──┘                                                                    └──> Notifications
+n8n workflows ───┼──> Webhook / connector intake ──> Optional event bus ──> Metrics, logs & events ──> Six pillars ──> Dashboard
+APIs/services ──┘                      (Kafka/NATS only if needed)                                        └──> Alerts
 ```
 
 The architecture is conceptual. It intentionally avoids vendor-specific endpoints, event schemas, customer data, and production topology. See [`diagrams/architecture.dot`](diagrams/architecture.mmd) and [`docs/architecture.md`](docs/architecture.md) for the source and design notes.
@@ -67,9 +68,10 @@ This is a **proposed stack for an implementation**, not a statement that the sof
 
 | Area | Proposed technology | Intended role |
 | --- | --- | --- |
-| Dashboard | **TypeScript** with a modern web UI | Responsive operational views, filtering, drill-down, and workflow-health summaries. |
+| Dashboard | **TypeScript**; Next.js is a candidate | A focused product interface for responsive operational views. Grafana is an option for internal or early-stage visualization; no UI framework is selected yet. |
 | Service layer | **Python** | Integration coordination, metric processing, analytics tasks, and API services. |
-| Integration contracts | **REST APIs and webhooks** | Connectors for agents, n8n workflows, and external services. |
+| Integration contracts | **REST APIs and webhooks** | Initial connectors for agents, n8n workflows, and external services. |
+| Event transport | **Webhooks first; Kafka/NATS optional** | Begin with the simplest reliable transport; evaluate a bus only when scale, replay, or fan-out requirements justify it. |
 | Workflow signals | **n8n** | Workflow execution and health signals exposed through appropriate supported integrations. |
 | Observability model | **Metrics, events, and error summaries** | A normalized view across sources, without requiring raw prompt or customer data. |
 | Storage | **Pluggable telemetry storage** | Selected later based on volume, retention, query needs, and operating cost. |
@@ -93,6 +95,14 @@ This is a **proposed stack for an implementation**, not a statement that the sof
 - **Cost transparency:** separate measured provider charges from estimates based on usage and pricing assumptions.
 - **Privacy by design:** collect only the operational metadata needed; avoid retaining prompts, secrets, or unnecessary customer content.
 - **Small-business operability:** favor clear defaults, simple onboarding, and understandable actions over complex enterprise configuration.
+
+
+## Architecture choices to validate
+
+- **Ingestion:** Start with supported webhooks and lightweight polling where needed. Kafka or NATS may become appropriate if the product demonstrates a need for durable replay, sustained event volume, or multiple independent consumers; they are not default infrastructure for a small-business MVP.
+- **Dashboard:** A Next.js/TypeScript interface could support a cohesive customer-facing SaaS experience. Grafana may accelerate an internal or early operational dashboard. Validate the operator experience before committing to either approach.
+- **Signal types:** Keep metrics, events, and error summaries distinct, preserving source and freshness. Avoid collecting raw prompts or customer content as a shortcut to debugging.
+- **Business metrics:** Leads, bookings, and attribution are opt-in product views dependent on authorized data sources and definitions. No revenue-calculation logic or actual business results are included in this repository.
 
 ## Challenges this project addresses
 
