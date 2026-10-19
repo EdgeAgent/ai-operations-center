@@ -143,30 +143,32 @@ It complements work in agents, MCP integrations, and n8n automation by demonstra
 
 ## Roadmap
 
-### Phase 1 — Product definition
+### Phase 1 — Fleet Health and Incident Center
 
-- Define the initial operator personas, core screens, and terminology.
-- Prioritize a small set of high-value health and execution signals.
-- Define connector capabilities and data freshness expectations.
+- Start with a small set of agent, n8n, and API signal sources.
+- Deliver a read-only view of status, execution outcomes, API health, error summaries, and signal freshness.
+- Use webhooks and lightweight connectors first; keep the event bus optional.
 
-### Phase 2 — Read-only observability MVP
+### Phase 2 — Cost Intelligence
 
-- Add an initial agent and workflow integration path.
-- Display recent activity, status, errors, and API health.
-- Establish basic dashboards and transparent usage estimates.
+- Add token and model-usage visibility where providers expose reliable usage data.
+- Show cost estimates with clear pricing assumptions and distinguish them from confirmed provider charges.
+- Surface API usage and rate-limit trends alongside workflow execution costs.
 
-### Phase 3 — Alerting and diagnostics
+### Phase 3 — Governance and Agent Registry
 
-- Add configurable alerts and notification channels.
-- Provide safe context for troubleshooting, with careful redaction and access control.
-- Improve recovery guidance and operational summaries.
+- Add an inventory of agents, workflows, and dependencies with ownership and documentation.
+- Introduce privacy-aware audit history, role-based access, and human approval views before considering control actions.
 
-### Phase 4 — SaaS readiness
+### Phase 4 — Business Metrics
 
-- Validate tenant isolation, roles, retention controls, and secure onboarding.
-- Evaluate integration reliability, system costs, and small-business support burden.
-- Add integrations based on demonstrated user need rather than connector count alone.
+- Explore leads processed, calls booked, and revenue attribution only when a customer authorizes the source and agrees on metric definitions.
+- Keep business metrics optional and clearly separate from technical health signals.
 
+### Phase 5 — SaaS readiness
+
+- Validate tenant isolation, retention and deletion controls, secure onboarding, and support workflows.
+- Evaluate system cost, integration reliability, and operator value before expanding the connector catalog.
 ## Repository structure
 
 ```text

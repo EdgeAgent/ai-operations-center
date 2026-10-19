@@ -20,7 +20,7 @@ A lightweight, source-aware operational layer for AI-enabled business systems: c
 
 ## MVP boundaries
 
-A credible first release should favor a read-only operational view over broad automation control. It should validate a limited number of integrations, basic signal freshness, run and error summaries, API health, and an understandable dashboard before expanding connectors or adding remediation actions.
+A credible first release should favor a read-only operational view over broad automation control. Start with Fleet Health and Incident Center: a limited number of n8n, agent, and API integrations, clear signal freshness, run and error summaries, and a simple operator dashboard. Add Cost Intelligence after verifying usage-source quality and labeling estimates. Introduce Governance and Agent Registry before any control actions; defer Business Metrics until data authorization and metric definitions are explicit.
 
 ## Success criteria to validate
 
